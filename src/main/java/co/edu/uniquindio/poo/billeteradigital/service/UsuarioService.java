@@ -11,13 +11,16 @@ public class UsuarioService implements IUsuarioService {
     private final List<Usuario> listaUsuarios = new ArrayList<>();
 
     @Override
-    public void loguearUsuario(Usuario usuario) {
-        if (usuario.getIdUsuario().equals("idUsuario")) {
-            System.out.println("Bienvenido " + usuario.getNombre());
-        } else {
-            System.out.println("Correo Incorrecto");
+    public Usuario loguearUsuario(Usuario usuario) {
+        for (Usuario u : listaUsuarios) { // listaUsuarios debe estar en tu servicio
+            if (u.getIdUsuario().equals(usuario.getIdUsuario())
+                    && u.getNombre().equalsIgnoreCase(usuario.getNombre())) {
+                return u; // Usuario válido
+            }
         }
+        return null; // No se encontró
     }
+
 
     @Override
     public void registrarUsuario(Usuario usuario) {

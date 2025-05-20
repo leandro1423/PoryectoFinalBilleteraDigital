@@ -34,7 +34,6 @@ public class CuentaService implements ICuentaService {
         return null;
     }
 
-
     @Override
     public List<Cuenta> listarCuentasPorUsuario(Usuario usuario) {
         return usuario.getCuentas();

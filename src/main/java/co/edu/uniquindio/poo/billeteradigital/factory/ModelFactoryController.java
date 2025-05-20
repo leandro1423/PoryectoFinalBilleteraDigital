@@ -1,6 +1,7 @@
 package co.edu.uniquindio.poo.billeteradigital.factory;
 
 import co.edu.uniquindio.poo.billeteradigital.interfaces.*;
+import co.edu.uniquindio.poo.billeteradigital.model.Usuario;
 import co.edu.uniquindio.poo.billeteradigital.service.*;
 
 public class ModelFactoryController {
@@ -8,6 +9,7 @@ public class ModelFactoryController {
     private static ModelFactoryController instance;
 
     private final IBilleteraDigitalService billeteraService;
+    private Usuario usuarioActual;
 
     private ModelFactoryController() {
         IUsuarioService usuarioService = new UsuarioService();
@@ -36,5 +38,13 @@ public class ModelFactoryController {
 
     public IBilleteraDigitalService getBilleteraService() {
         return billeteraService;
+    }
+
+    public Usuario getUsuarioActual() {
+        return usuarioActual;
+    }
+
+    public void setUsuarioActual(Usuario usuarioActual) {
+        this.usuarioActual = usuarioActual;
     }
 }

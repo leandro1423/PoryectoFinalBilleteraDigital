@@ -5,7 +5,7 @@ import java.util.List;
 
 public interface IUsuarioService {
 
-    void loguearUsuario(Usuario usuario);
+    Usuario loguearUsuario(Usuario usuario);
     void registrarUsuario(Usuario usuario);
     Usuario BuscarUsuarioPorId(String idUsuario);
     Usuario ModificarUsuario(String idUsuario,String nuevoNombre,String nuevoCorreo,String nuevoTelefono);

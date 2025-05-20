@@ -18,10 +18,12 @@ public class UsuarioController {
         this.modelFactory = ModelFactoryController.getInstance();
     }
 
-
     // Gestión de Usuario
     public void registrarUsuario(Usuario usuario) {
         modelFactory.getBilleteraService().registrarUsuario(usuario);
+    }
+    public Usuario BuscarUsuarioPorId(String idUsuario) {
+        return modelFactory.getBilleteraService().BuscarUsuarioPorId(idUsuario);
     }
 
     public Usuario modificarUsuario(String idUsuario, String nombre, String correo, String telefono) {

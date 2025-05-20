@@ -11,7 +11,7 @@ public class Usuario {
     private String telefono;
     private String direccion;
     private double saldo;
-
+    private String tipo;
     private List<Cuenta> cuentas = new ArrayList<>();
     private List<Transaccion> transacciones = new ArrayList<>();
     private List<Presupuesto> Presupuestos = new ArrayList<>();
@@ -21,15 +21,23 @@ public class Usuario {
         // Constructor vacío para permitir crear objetos sin argumentos
     }
 
-
     public Usuario(String idUsuario, String nombre, String correo, String telefono,
-                   String direccion, double saldo) {
+                   String direccion, double saldo, String tipo) {
         this.idUsuario = idUsuario;
         this.nombre = nombre;
         this.correo = correo;
         this.telefono = telefono;
         this.direccion = direccion;
         this.saldo = saldo;
+        this.tipo = tipo;
+    }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
     }
 
     public String getIdUsuario() {
@@ -115,4 +123,9 @@ public class Usuario {
     public void setCategorias(List<Categoria> categorias) {
         this.categorias = categorias;
     }
+
+    public boolean esAdministrador() {
+        return "ADM".equalsIgnoreCase(tipo);
+    }
+
 }

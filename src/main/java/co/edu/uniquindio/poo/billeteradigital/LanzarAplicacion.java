@@ -13,7 +13,7 @@ public class LanzarAplicacion extends Application {
     @Override
     public void start(Stage primaryStage) {
         try {
-            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/views/VentanaInicioView.fxml")));
+            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/views/UsuarioView/UsuarioVistaInicio.fxml")));
             primaryStage.setTitle("Billetera Digital - Inicio");
             primaryStage.setScene(new Scene(root));
             primaryStage.show();
@@ -26,3 +26,4 @@ public class LanzarAplicacion extends Application {
         launch(args);
     }
 }
+

@@ -1,9 +1,11 @@
 package co.edu.uniquindio.poo.billeteradigital.viewcontroller.UsuarioViewController;
 
 import co.edu.uniquindio.poo.billeteradigital.controller.UsuarioController;
+import co.edu.uniquindio.poo.billeteradigital.factory.ModelFactoryController;
 import co.edu.uniquindio.poo.billeteradigital.model.Usuario;
 import static co.edu.uniquindio.poo.billeteradigital.utils.MensajesInformacionConstantes.*;
 
+import co.edu.uniquindio.poo.billeteradigital.model.builder.UsuarioBuilder;
 import co.edu.uniquindio.poo.billeteradigital.utils.ValidacionUtils;
 
 import javafx.fxml.FXML;
@@ -29,80 +31,114 @@ public class UsuarioInicioViewController {
     @FXML
     private Button btnRegistrarse;
 
-    private UsuarioController usuarioController;
+    @FXML
+    private Button btnIngresar;
+
+    private final UsuarioController usuarioController = new UsuarioController();
+
+    private Usuario usuarioAdminstrador;
 
     @FXML
     public void initialize() {
-        usuarioController = new UsuarioController();
+        this.crearUsuarioAdminstrador();
         btnRegistrarse.setOnAction(event -> abrirVentanaRegistro());
+        btnIngresar.setOnAction(event -> ingresar()); // ✅ Ahora llama al método correcto
     }
 
     @FXML
     private void ingresar() {
-        String nombre = txtNombre.getText();
-        String cedula = txtCedula.getText();
+        String nombre = txtNombre.getText().trim();
+        String cedula = txtCedula.getText().trim();
 
-        // Validar campos
         if (!ValidacionUtils.camposSonValidos(nombre, cedula)) {
             mostrarMensaje("Error", null, CAMPOS_OBLIGATORIOS, Alert.AlertType.ERROR);
             return;
         }
 
-        // Crear usuario temporal para la validación
-        Usuario usuarioTmp = new Usuario();
-        usuarioTmp.setIdUsuario(cedula);
-        usuarioTmp.setNombre(nombre);
+        Usuario usuarioLogueado = usuarioController.BuscarUsuarioPorId(cedula);
 
-        boolean logueado = usuarioController.loguearUsuario(usuarioTmp);
+        if (usuarioLogueado != null && usuarioLogueado.getNombre().equalsIgnoreCase(nombre)) {
+            ModelFactoryController.getInstance().setUsuarioActual(usuarioLogueado);
 
-        if (logueado) {
-            mostrarMensaje("Bienvenido", null, "Bienvenido " + nombre, Alert.AlertType.INFORMATION);
-            abrirVentanaPrincipal(usuarioTmp);
+            mostrarMensaje("Bienvenido", null, "Bienvenido " + usuarioLogueado.getNombre(), Alert.AlertType.INFORMATION);
+
+            // Cerrar ventana login
+            Stage stageActual = (Stage) btnIngresar.getScene().getWindow();
+            stageActual.close();
+
+            // Abrir la ventana según tipo
+            if (usuarioLogueado.esAdministrador()) {
+                abrirVentanaAdministrador();
+            } else {
+                abrirVentanaPrincipal(usuarioLogueado);
+            }
+
         } else {
             mostrarMensaje("Error", null, USUARIO_NO_ENCONTRADO, Alert.AlertType.ERROR);
+            limpiarCampos();
         }
     }
 
-    private void abrirVentanaPrincipal(Usuario usuario) {
-        try {
-            // Asegúrate que la ruta es relativa al paquete de la clase actual
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/UsuarioView/PrincipalUsuarioView.fxml"));
 
-            Parent root = loader.load();
+    private void crearUsuarioAdminstrador() {
+        usuarioAdminstrador = new UsuarioBuilder()
+            .conNombre("Administrador")
+            .conIdUsuario("123")
+            .conTipo("ADM").build();
 
-            Scene scene = new Scene(root);
-            Stage stage = new Stage();
-
-            stage.setTitle("Billetera Digital - Usuario");
-            stage.setScene(scene);
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-            mostrarMensaje("Error", null, "No se pudo abrir la ventana principal.", Alert.AlertType.ERROR);
-        }
+        usuarioController.registrarUsuario(usuarioAdminstrador);
     }
 
     private void abrirVentanaRegistro() {
         try {
-            // Asegúrate que la ruta es relativa al paquete de la clase actual
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/UsuarioView/VentanaPrincipalUsuario.fxml"));
-
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/FormulariosView/RegistrarUsuarioView.fxml"));
             Parent root = loader.load();
 
             Scene scene = new Scene(root);
             Stage stage = new Stage();
-
             stage.setTitle("Registrar Usuario");
             stage.setScene(scene);
-            stage.initModality(Modality.APPLICATION_MODAL); // Hace que la ventana sea modal
-            stage.showAndWait(); // Espera a que la ventana se cierre antes de continuar
-
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.showAndWait();
         } catch (IOException e) {
             e.printStackTrace();
             mostrarMensaje("Error", null, "No se pudo abrir la ventana de registro.", Alert.AlertType.ERROR);
         }
     }
 
+    private void abrirVentanaPrincipal(Usuario usuario) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/UsuarioView/UsuarioPrincipal-view.fxml"));
+            Parent root = loader.load();
+
+            Scene scene = new Scene(root);
+            Stage stage = new Stage();
+            stage.setTitle("Billetera Digital - Usuario");
+            stage.setScene(scene);
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
+            mostrarMensaje("Error", null, "No se pudo abrir la ventana principal.", Alert.AlertType.ERROR);
+        }
+    }
+
+    private void abrirVentanaAdministrador() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/AdministradorView/AdministradorPrincipal-view.fxml"));
+            Parent root = loader.load();
+
+            Scene scene = new Scene(root);
+            Stage stage = new Stage();
+            stage.setTitle("Billetera Digital - Administrador");
+            stage.setScene(scene);
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
+            mostrarMensaje("Error", null, "No se pudo abrir la ventana del administrador.", Alert.AlertType.ERROR);
+        }
+    }
 
 
     private void mostrarMensaje(String titulo, String header, String contenido, Alert.AlertType alertType) {
@@ -111,5 +147,10 @@ public class UsuarioInicioViewController {
         alert.setHeaderText(header);
         alert.setContentText(contenido);
         alert.showAndWait();
+    }
+
+    private void limpiarCampos() {
+        txtNombre.clear();
+        txtCedula.clear();
     }
 }

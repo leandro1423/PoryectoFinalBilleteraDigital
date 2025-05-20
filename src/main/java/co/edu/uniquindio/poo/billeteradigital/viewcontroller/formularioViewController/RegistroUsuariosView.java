@@ -1,4 +1,4 @@
-package co.edu.uniquindio.poo.billeteradigital.viewcontroller.UsuarioViewController;
+package co.edu.uniquindio.poo.billeteradigital.viewcontroller.formularioViewController;
 
 import co.edu.uniquindio.poo.billeteradigital.controller.UsuarioController;
 import co.edu.uniquindio.poo.billeteradigital.enums.TipoBanco;
