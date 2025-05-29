@@ -1,14 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
 
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="$CONTROLLER_NAME$"
-            prefHeight="400.0" prefWidth="600.0" >
+            fx:controller="co.edu.uniquindio.poo.billeteradigital.viewcontroller.formularioViewController.TransferenciaController">
+
+    <VBox spacing="10" alignment="CENTER" AnchorPane.topAnchor="0" AnchorPane.leftAnchor="0"
+          AnchorPane.rightAnchor="0" AnchorPane.bottomAnchor="0">
+
+        <padding>
+            <Insets top="20" right="20" bottom="20" left="20"/>
+        </padding>
+
+        <!-- ComboBox para seleccionar cuenta origen -->
+        <ComboBox fx:id="comboCuentaOrigen" promptText="Seleccione Cuenta Origen" prefWidth="250"/>
+
+        <TextField fx:id="txtDestinatario" promptText="ID del Usuario Destino" prefWidth="250"/>
+
+        <!-- ComboBox para seleccionar cuenta destino -->
+        <ComboBox fx:id="comboCuentaDestino" promptText="Seleccione Cuenta Destino" prefWidth="250" disable="true"/>
+
+        <TextField fx:id="txtMonto" promptText="Monto a transferir" prefWidth="250"/>
+        <TextField fx:id="txtDescripcion" promptText="Descripción" prefWidth="250"/>
+        <Button fx:id="btnEnviar" text="Enviar Transferencia" onAction="#enviarTransferencia" prefWidth="250"/>
+
+    </VBox>
 
 </AnchorPane>

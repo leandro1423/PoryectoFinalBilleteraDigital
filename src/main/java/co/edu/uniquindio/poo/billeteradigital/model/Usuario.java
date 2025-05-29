@@ -14,11 +14,10 @@ public class Usuario {
     private String tipo;
     private List<Cuenta> cuentas = new ArrayList<>();
     private List<Transaccion> transacciones = new ArrayList<>();
-    private List<Presupuesto> Presupuestos = new ArrayList<>();
+    private List<Presupuesto> presupuestos = new ArrayList<>();
     private List<Categoria> categorias = new ArrayList<>();
 
     public Usuario() {
-        // Constructor vacío para permitir crear objetos sin argumentos
     }
 
     public Usuario(String idUsuario, String nombre, String correo, String telefono,
@@ -105,11 +104,11 @@ public class Usuario {
     }
 
     public List<Presupuesto> getPresupuestos() {
-        return Presupuestos;
+        return presupuestos;
     }
 
     public void setPresupuestos(List<Presupuesto> presupuestos) {
-        Presupuestos = presupuestos;
+        presupuestos = presupuestos;
     }
 
     public double consultarSaldo() {
@@ -127,5 +126,12 @@ public class Usuario {
     public boolean esAdministrador() {
         return "ADM".equalsIgnoreCase(tipo);
     }
+
+    public double obtenerSaldoTotal() {
+        return cuentas.stream()
+                .mapToDouble(Cuenta::getSaldo)
+                .sum();
+    }
+
 
 }

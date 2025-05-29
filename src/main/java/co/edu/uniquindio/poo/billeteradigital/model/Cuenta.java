@@ -3,6 +3,8 @@ package co.edu.uniquindio.poo.billeteradigital.model;
 import co.edu.uniquindio.poo.billeteradigital.enums.TipoBanco;
 import co.edu.uniquindio.poo.billeteradigital.enums.TipoCuenta;
 
+import java.util.UUID;
+
 public class Cuenta {
 
     private String idCuenta;
@@ -10,15 +12,15 @@ public class Cuenta {
     private String numeroCuenta;
     private TipoCuenta tipoCuenta;
     private Usuario usuario;
-    private double saldo;  // <-- agregado
+    private double saldo;
 
     public Cuenta() {
 
     }
 
-    public Cuenta(String idCuenta, TipoBanco banco,
+    public Cuenta(TipoBanco banco,
                   String numeroCuenta, TipoCuenta tipoCuenta, Usuario usuario, double saldo) {
-        this.idCuenta = idCuenta;
+        this.idCuenta = UUID.randomUUID().toString(); // Se genera el ID interno
         this.banco = banco;
         this.numeroCuenta = numeroCuenta;
         this.tipoCuenta = tipoCuenta;
@@ -73,5 +75,10 @@ public class Cuenta {
 
     public void setSaldo(double saldo) {
         this.saldo = saldo;
+    }
+
+    @Override
+    public String toString() {
+        return banco + " - " + tipoCuenta + " - " + numeroCuenta + " (Saldo: $" + saldo + ")";
     }
 }

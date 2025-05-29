@@ -1,8 +1,10 @@
+// CuentaService.java
 package co.edu.uniquindio.poo.billeteradigital.service;
 
 import co.edu.uniquindio.poo.billeteradigital.interfaces.ICuentaService;
 import co.edu.uniquindio.poo.billeteradigital.model.Cuenta;
 import co.edu.uniquindio.poo.billeteradigital.model.Usuario;
+import co.edu.uniquindio.poo.billeteradigital.utils.ValidacionUtils;
 
 import java.util.List;
 
@@ -10,6 +12,9 @@ public class CuentaService implements ICuentaService {
 
     @Override
     public void agregarCuenta(Usuario usuario, Cuenta cuenta) {
+        int cantidadActual = usuario.getCuentas().size() + 1;
+        String nuevoId = ValidacionUtils.generarId(cantidadActual);
+        cuenta.setIdCuenta(nuevoId);
         usuario.getCuentas().add(cuenta);
     }
 

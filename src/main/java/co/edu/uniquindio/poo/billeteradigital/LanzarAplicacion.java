@@ -14,7 +14,7 @@ public class LanzarAplicacion extends Application {
     public void start(Stage primaryStage) {
         try {
             Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/views/UsuarioView/UsuarioVistaInicio.fxml")));
-            primaryStage.setTitle("Billetera Digital - Inicio");
+            primaryStage.setTitle("Inicio de Sesión");
             primaryStage.setScene(new Scene(root));
             primaryStage.show();
         } catch (Exception e) {

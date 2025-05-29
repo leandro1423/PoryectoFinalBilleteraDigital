@@ -20,7 +20,7 @@ public class GestionCuentasViewController {
     private VBox contenedorFormulario;
 
     @FXML
-    private Button btnCrearEliminarCuenta;
+    private Button btnCrearCuenta;
 
     @FXML
     private Button btnActualizarCuenta;
@@ -37,7 +37,7 @@ public class GestionCuentasViewController {
     }
 
     @FXML
-    private void handleCrearEliminarCuenta() {
+    private void handleCrearCuenta() {
         try {
             // Cargar el archivo FXML del formulario
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/FormulariosView/FormularioCuenta-view.fxml"));
@@ -58,7 +58,7 @@ public class GestionCuentasViewController {
             modalStage.initModality(Modality.APPLICATION_MODAL);
 
             // Establecer la ventana padre (opcional, mejora el enfoque y comportamiento)
-            modalStage.initOwner(btnCrearEliminarCuenta.getScene().getWindow());
+            modalStage.initOwner(btnCrearCuenta.getScene().getWindow());
 
             // Mostrar y bloquear hasta que se cierre
             modalStage.showAndWait();

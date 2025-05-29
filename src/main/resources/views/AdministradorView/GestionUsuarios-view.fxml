@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/17.0.12"
+            xmlns:fx="http://javafx.com/fxml/1"
+            prefWidth="600" prefHeight="550"
+            fx:controller="co.edu.uniquindio.poo.billeteradigital.viewcontroller.AdministradorController.GestionUsuariosController">
+
+    <children>
+        <VBox layoutX="20" layoutY="20" prefWidth="560" prefHeight="520" spacing="10">
+
+            <!-- Tabla de usuarios -->
+            <TableView fx:id="tablaUsuarios" prefHeight="220" prefWidth="560">
+                <columns>
+                    <TableColumn fx:id="colNombre" text="Nombre" prefWidth="100"/>
+                    <TableColumn fx:id="colCorreo" text="Correo" prefWidth="100"/>
+                    <TableColumn fx:id="colTelefono" text="Teléfono" prefWidth="90"/>
+                    <TableColumn fx:id="colCedula" text="Cédula" prefWidth="80"/>
+                    <TableColumn fx:id="colBanco" text="Banco" prefWidth="70"/>
+                    <TableColumn fx:id="colTipoCuenta" text="Tipo de Cuenta" prefWidth="100"/>
+                    <TableColumn fx:id="colDireccion" text="Dirección" prefWidth="120"/>
+                </columns>
+            </TableView>
+
+            <!-- Formulario para actualizar usuario -->
+            <GridPane hgap="10" vgap="10">
+                <columnConstraints>
+                    <ColumnConstraints minWidth="100"/>
+                    <ColumnConstraints minWidth="250"/>
+                </columnConstraints>
+
+                <rowConstraints>
+                    <RowConstraints/> <!-- Nombre -->
+                    <RowConstraints/> <!-- Correo -->
+                    <RowConstraints/> <!-- Teléfono -->
+                    <RowConstraints/> <!-- Cédula -->
+                    <RowConstraints/> <!-- Banco -->
+                    <RowConstraints/> <!-- TipoCuenta -->
+                    <RowConstraints/> <!-- Dirección -->
+                    <RowConstraints/> <!-- Botones -->
+                </rowConstraints>
+
+                <children>
+                    <Label text="Nombre:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                    <TextField fx:id="nombreField" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+
+                    <Label text="Correo:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                    <TextField fx:id="correoField" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+
+                    <Label text="Número de Teléfono:" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+                    <TextField fx:id="telefonoField" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+
+                    <Label text="Cédula:" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+                    <TextField fx:id="cedulaField" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+
+                    <Label text="Banco:" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+                    <ComboBox fx:id="bancoComboBox" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+
+                    <Label text="Tipo de Cuenta:" GridPane.columnIndex="0" GridPane.rowIndex="5"/>
+                    <ComboBox fx:id="tipoCuentaComboBox" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
+
+                    <Label text="Dirección:" GridPane.columnIndex="0" GridPane.rowIndex="6"/>
+                    <TextField fx:id="direccionField" GridPane.columnIndex="1" GridPane.rowIndex="6"/>
+
+                    <HBox spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="7">
+                        <children>
+                            <Button fx:id="actualizarBtn" text="Actualizar Usuario"/>
+                            <Button fx:id="eliminarBtn" text="Eliminar Usuario"/>
+                        </children>
+                    </HBox>
+                </children>
+            </GridPane>
+
+        </VBox>
+    </children>
+</AnchorPane>

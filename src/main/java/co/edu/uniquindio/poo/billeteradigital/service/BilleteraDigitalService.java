@@ -65,6 +65,26 @@ public class BilleteraDigitalService implements IBilleteraDigitalService {
         return usuarioService.listarUsuarios();
     }
 
+    @Override
+    public IUsuarioService getUsuarioService() {
+        return this.usuarioService;
+    }
+
+    @Override
+    public ICuentaService getCuentaService() {
+        return null;
+    }
+
+    @Override
+    public IPresupuestoService getPresupuestoService() {
+        return null;
+    }
+
+    @Override
+    public IEstadisticaService getEstadisticaService() {
+        return null;
+    }
+
     // Cuenta
     @Override
     public void agregarCuenta(Usuario usuario, Cuenta cuenta) {
@@ -135,18 +155,23 @@ public class BilleteraDigitalService implements IBilleteraDigitalService {
     }
 
     @Override
-    public boolean realizarDeposito(Usuario usuario, double monto, String descripcion) {
-        return transaccionService.realizarDeposito(usuario, monto, descripcion);
+    public boolean realizarDeposito(Usuario usuario, Cuenta cuenta, double monto, String descripcion) {
+        return transaccionService.realizarDeposito(usuario, cuenta, monto, descripcion);
     }
 
     @Override
-    public boolean realizarRetiro(Usuario usuario, double monto, String descripcion) {
-        return transaccionService.realizarRetiro(usuario, monto, descripcion);
+    public boolean realizarRetiro(Usuario usuario, Cuenta cuenta, double monto, String descripcion) {
+        return transaccionService.realizarRetiro(usuario, cuenta, monto, descripcion);
     }
 
     @Override
-    public boolean realizarTransferencia(Usuario usuarioOrigen, Usuario usuarioDestino, double monto, String descripcion) {
-        return transaccionService.realizarTransferencia(usuarioOrigen, usuarioDestino, monto, descripcion);
+    public boolean realizarTransferencia(Usuario usuarioOrigen, Cuenta cuentaOrigen, Usuario usuarioDestino, Cuenta cuentaDestino, double monto, String descripcion) {
+        return transaccionService.realizarTransferencia(usuarioOrigen, cuentaOrigen, usuarioDestino, cuentaDestino, monto, descripcion);
+    }
+
+    @Override
+    public ITransaccionService getTransaccionService() {
+        return this.transaccionService;
     }
 
     // Categoria

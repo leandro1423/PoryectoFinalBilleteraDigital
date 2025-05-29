@@ -8,8 +8,11 @@ import java.util.Date;
 public class Transaccion {
 
     private String idTransaccion;
-    private LocalDate fechaTransaccion;
+    public LocalDate fechaTransaccion;
     private TipoTransaccion tipoTransaccion;
+
+    public Transaccion() {
+    }
 
 
     private double monto;

@@ -19,6 +19,8 @@ public interface IBilleteraDigitalService {
     List<Usuario> listarUsuarios();
 
 
+
+
     //Cuenta
     void agregarCuenta(Usuario usuario, Cuenta cuenta);
     void actualizarCuenta(Usuario usuario, Cuenta cuenta);
@@ -36,10 +38,12 @@ public interface IBilleteraDigitalService {
     List<Transaccion> listarTransaccionesPorCategoria(Usuario usuario, String categoria);
     List<Transaccion> listarTransaccionesPorFecha(Usuario usuario, LocalDate desde, LocalDate hasta);
     List<Transaccion> listarTransaccionesPorTipo(Usuario usuario, TipoTransaccion tipo);
-    boolean realizarDeposito(Usuario usuario, double monto, String descripcion);
-    boolean realizarRetiro(Usuario usuario, double monto, String descripcion);
-    boolean realizarTransferencia(Usuario usuarioOrigen, Usuario usuarioDestino, double monto, String descripcion);
+    boolean realizarDeposito(Usuario usuario, Cuenta cuenta, double monto, String descripcion);
+    boolean realizarRetiro(Usuario usuario, Cuenta cuenta, double monto, String descripcion);
+    boolean realizarTransferencia(Usuario usuarioOrigen, Cuenta cuentaOrigen, Usuario usuarioDestino, Cuenta cuentaDestino, double monto, String descripcion);
 
+
+    ITransaccionService getTransaccionService();
 
     //Categoria
     void crearCategoria(Usuario usuario, Categoria categoria);
@@ -61,6 +65,11 @@ public interface IBilleteraDigitalService {
     List<Usuario> usuariosConMasTransacciones();
     double saldoPromedioUsuarios();
     Map<String, Integer> gastosMasComunes();
+
+    IUsuarioService getUsuarioService();
+    ICuentaService getCuentaService();
+    IPresupuestoService getPresupuestoService();
+    IEstadisticaService getEstadisticaService();
 
 
 }

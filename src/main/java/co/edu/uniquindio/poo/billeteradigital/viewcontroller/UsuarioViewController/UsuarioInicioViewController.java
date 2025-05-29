@@ -34,7 +34,10 @@ public class UsuarioInicioViewController {
     @FXML
     private Button btnIngresar;
 
-    private final UsuarioController usuarioController = new UsuarioController();
+
+
+    private final UsuarioController usuarioController = new UsuarioController(); // ✅
+
 
     private Usuario usuarioAdminstrador;
 
@@ -42,18 +45,14 @@ public class UsuarioInicioViewController {
     public void initialize() {
         this.crearUsuarioAdminstrador();
         btnRegistrarse.setOnAction(event -> abrirVentanaRegistro());
-        btnIngresar.setOnAction(event -> ingresar()); // ✅ Ahora llama al método correcto
+        btnIngresar.setOnAction(event -> ingresar());
+
     }
 
     @FXML
     private void ingresar() {
         String nombre = txtNombre.getText().trim();
         String cedula = txtCedula.getText().trim();
-
-        if (!ValidacionUtils.camposSonValidos(nombre, cedula)) {
-            mostrarMensaje("Error", null, CAMPOS_OBLIGATORIOS, Alert.AlertType.ERROR);
-            return;
-        }
 
         Usuario usuarioLogueado = usuarioController.BuscarUsuarioPorId(cedula);
 

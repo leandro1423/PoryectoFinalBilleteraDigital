@@ -2,22 +2,26 @@ package co.edu.uniquindio.poo.billeteradigital.service;
 
 import co.edu.uniquindio.poo.billeteradigital.enums.TipoTransaccion;
 import co.edu.uniquindio.poo.billeteradigital.interfaces.ITransaccionService;
+import co.edu.uniquindio.poo.billeteradigital.model.Cuenta;
 import co.edu.uniquindio.poo.billeteradigital.model.Transaccion;
 import co.edu.uniquindio.poo.billeteradigital.model.Usuario;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class TransaccionService implements ITransaccionService {
 
     private final List<Transaccion> listaTransacciones = new ArrayList<>();
+    private final List<Usuario> listaUsuarios = new ArrayList<>();
 
     @Override
     public void crearTransaccion(Transaccion transaccion) {
         listaTransacciones.add(transaccion);
         Usuario usuario = obtenerUsuarioDeTransaccion(transaccion);
-        if (usuario != null) {
+        if (usuario != null && usuario.getTransacciones() != null) {
             usuario.getTransacciones().add(transaccion);
         }
     }
@@ -26,7 +30,7 @@ public class TransaccionService implements ITransaccionService {
     public void eliminarTransaccion(Transaccion transaccion) {
         listaTransacciones.remove(transaccion);
         Usuario usuario = obtenerUsuarioDeTransaccion(transaccion);
-        if (usuario != null) {
+        if (usuario != null && usuario.getTransacciones() != null) {
             usuario.getTransacciones().remove(transaccion);
         }
     }
@@ -46,7 +50,7 @@ public class TransaccionService implements ITransaccionService {
 
     @Override
     public List<Transaccion> listarTransacciones() {
-        return List.of(); // O implementa global si deseas
+        return new ArrayList<>(listaTransacciones);
     }
 
     @Override
@@ -79,7 +83,6 @@ public class TransaccionService implements ITransaccionService {
         return resultado;
     }
 
-
     @Override
     public List<Transaccion> listarTransaccionesPorTipo(Usuario usuario, TipoTransaccion tipo) {
         List<Transaccion> resultado = new ArrayList<>();
@@ -92,18 +95,20 @@ public class TransaccionService implements ITransaccionService {
     }
 
     @Override
-    public boolean realizarDeposito(Usuario usuario, double monto, String descripcion) {
-        if (monto <= 0) return false;
+    public boolean realizarDeposito(Usuario usuario, Cuenta cuenta, double monto, String descripcion) {
+        if (monto <= 0 || usuario == null || cuenta == null || !usuario.getCuentas().contains(cuenta)) {
+            return false;
+        }
 
-        usuario.setSaldo(usuario.getSaldo() + monto);
+        cuenta.setSaldo(cuenta.getSaldo() + monto);
 
         Transaccion transaccion = new Transaccion(
-                null,
+                generarIdUnico(),
                 LocalDate.now(),
                 TipoTransaccion.DEPOSITO,
                 monto,
                 descripcion,
-                null,
+                cuenta,
                 null,
                 null
         );
@@ -113,18 +118,20 @@ public class TransaccionService implements ITransaccionService {
     }
 
     @Override
-    public boolean realizarRetiro(Usuario usuario, double monto, String descripcion) {
-        if (monto <= 0 || monto > usuario.getSaldo()) return false;
+    public boolean realizarRetiro(Usuario usuario, Cuenta cuenta, double monto, String descripcion) {
+        if (monto <= 0 || usuario == null || cuenta == null || !usuario.getCuentas().contains(cuenta) || monto > cuenta.getSaldo()) {
+            return false;
+        }
 
-        usuario.setSaldo(usuario.getSaldo() - monto);
+        cuenta.setSaldo(cuenta.getSaldo() - monto);
 
         Transaccion transaccion = new Transaccion(
-                null,
+                generarIdUnico(),
                 LocalDate.now(),
                 TipoTransaccion.RETIRO,
                 monto,
                 descripcion,
-                null,
+                cuenta,
                 null,
                 null
         );
@@ -134,31 +141,42 @@ public class TransaccionService implements ITransaccionService {
     }
 
     @Override
-    public boolean realizarTransferencia(Usuario usuarioOrigen, Usuario usuarioDestino, double monto, String descripcion) {
-        if (monto <= 0 || monto > usuarioOrigen.getSaldo()) return false;
+    public boolean realizarTransferencia(Usuario usuarioOrigen, Cuenta cuentaOrigen, Usuario usuarioDestino, Cuenta cuentaDestino, double monto, String descripcion) {
+        if (monto <= 0
+                || usuarioOrigen == null
+                || cuentaOrigen == null
+                || usuarioDestino == null
+                || cuentaDestino == null
+                || !usuarioOrigen.getCuentas().contains(cuentaOrigen)
+                || !usuarioDestino.getCuentas().contains(cuentaDestino)
+                || monto > cuentaOrigen.getSaldo()) {
+            return false;
+        }
 
-        usuarioOrigen.setSaldo(usuarioOrigen.getSaldo() - monto);
-        usuarioDestino.setSaldo(usuarioDestino.getSaldo() + monto);
+        // Restar monto en cuenta origen
+        cuentaOrigen.setSaldo(cuentaOrigen.getSaldo() - monto);
+        // Sumar monto en cuenta destino
+        cuentaDestino.setSaldo(cuentaDestino.getSaldo() + monto);
 
         Transaccion transaccionSalida = new Transaccion(
-                null,
+                generarIdUnico(),
                 LocalDate.now(),
                 TipoTransaccion.TRANSFERENCIA_ENVIADA,
                 monto,
                 descripcion,
-                null,
-                null,
+                cuentaOrigen,
+                cuentaDestino,
                 null
         );
 
         Transaccion transaccionEntrada = new Transaccion(
-                null,
+                generarIdUnico(),
                 LocalDate.now(),
                 TipoTransaccion.TRANSFERENCIA_RECIBIDA,
                 monto,
                 descripcion,
-                null,
-                null,
+                cuentaOrigen,
+                cuentaDestino,
                 null
         );
 
@@ -167,6 +185,7 @@ public class TransaccionService implements ITransaccionService {
 
         return true;
     }
+
 
     private Usuario obtenerUsuarioDeTransaccion(Transaccion transaccion) {
         if (transaccion.getCuentaOrigen() != null) {
@@ -177,4 +196,43 @@ public class TransaccionService implements ITransaccionService {
         }
         return null;
     }
+
+    private String generarIdUnico() {
+        return UUID.randomUUID().toString();
+    }
+
+
+    @Override
+    public List<Transaccion> buscarTransaccionesPorIdCuenta(String idCuenta) {
+        if (idCuenta == null) {
+            return new ArrayList<>();
+        }
+
+        List<Transaccion> resultado = new ArrayList<>();
+        for (Transaccion transaccion : listaTransacciones) {
+            boolean coincideCuentaOrigen = transaccion.getCuentaOrigen() != null &&
+                    idCuenta.equals(transaccion.getCuentaOrigen().getIdCuenta());
+            boolean coincideCuentaDestino = transaccion.getCuentaDestino() != null &&
+                    idCuenta.equals(transaccion.getCuentaDestino().getIdCuenta());
+
+            if (coincideCuentaOrigen || coincideCuentaDestino) {
+                resultado.add(transaccion);
+            }
+        }
+        return resultado;
+    }
+
+    public Usuario obtenerUsuarioPorId(String idUsuario) {
+        for (Usuario usuario : listaUsuarios) {
+            if (usuario.getIdUsuario().equals(idUsuario)) {
+                return usuario;
+            }
+        }
+        return null; // Si no se encuentra
+    }
+
+
+
+
+
 }

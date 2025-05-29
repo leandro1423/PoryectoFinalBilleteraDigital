@@ -20,9 +20,9 @@
     <center>
         <VBox alignment="CENTER" spacing="20">
 
-            <Button fx:id="btnCrearEliminarCuenta"
+            <Button fx:id="btnCrearCuenta"
                     text="Crear o Eliminar Cuenta"
-                    onAction="#handleCrearEliminarCuenta"
+                    onAction="#handleCrearCuenta"
                     prefWidth="200" prefHeight="40"
                     style="-fx-background-radius: 10; -fx-font-size: 14px;" />
 

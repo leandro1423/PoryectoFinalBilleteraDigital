@@ -1,14 +1,85 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="$CONTROLLER_NAME$"
-            prefHeight="400.0" prefWidth="600.0" >
+<AnchorPane xmlns="http://javafx.com/javafx/23.0.1"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="co.edu.uniquindio.poo.billeteradigital.viewcontroller.UsuarioViewController.ConsultaTransaccionesController"
+            prefWidth="800" prefHeight="600" style="-fx-background-color: white;">
 
+    <VBox spacing="20.0" AnchorPane.topAnchor="10.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
+        <padding>
+            <Insets top="20" right="20" bottom="20" left="20"/>
+        </padding>
+
+        <!-- Título -->
+        <Label text="Historial de Transacciones" style="-fx-font-weight: bold;">
+            <font>
+                <Font size="24.0"/>
+            </font>
+        </Label>
+
+        <!-- Panel de Totales -->
+        <HBox spacing="30.0" alignment="CENTER" style="-fx-background-color: #f0f0f0; -fx-background-radius: 10;">
+            <padding>
+                <Insets top="15" bottom="15" left="20" right="20"/>
+            </padding>
+
+            <VBox spacing="5.0" alignment="CENTER">
+                <Label text="Total Enviado" style="-fx-font-weight: bold;"/>
+                <Label fx:id="lblTotalEnviado" text="0.00" style="-fx-text-fill: #e74c3c;">
+                    <font>
+                        <Font size="18.0"/>
+                    </font>
+                </Label>
+            </VBox>
+
+            <VBox spacing="5.0" alignment="CENTER">
+                <Label text="Total Recibido" style="-fx-font-weight: bold;"/>
+                <Label fx:id="lblTotalRecibido" text="0.00" style="-fx-text-fill: #2ecc71;">
+                    <font>
+                        <Font size="18.0"/>
+                    </font>
+                </Label>
+            </VBox>
+
+            <VBox spacing="5.0" alignment="CENTER">
+                <Label text="Balance" style="-fx-font-weight: bold;"/>
+                <Label fx:id="lblBalance" text="0.00" style="-fx-text-fill: #00d9fd;">
+                    <font>
+                        <Font size="18.0"/>
+                    </font>
+                </Label>
+            </VBox>
+        </HBox>
+
+        <!-- Filtro -->
+        <ComboBox fx:id="comboTipoTransaccion" promptText="Filtrar por tipo" prefWidth="200"/>
+
+        <!-- Tabla de Transacciones -->
+        <VBox spacing="10.0" VBox.vgrow="ALWAYS">
+            <Label text="Detalle de Transacciones" style="-fx-font-weight: bold;">
+                <font>
+                    <Font size="16.0"/>
+                </font>
+            </Label>
+            <TableView fx:id="tablaTransacciones" prefHeight="400.0">
+                <columns>
+                    <TableColumn fx:id="colFecha" text="Fecha" prefWidth="150"/>
+                    <TableColumn fx:id="colTipo" text="Tipo" prefWidth="150"/>
+                    <TableColumn fx:id="colMonto" text="Monto" prefWidth="150"/>
+                    <TableColumn fx:id="colDescripcion" text="Descripción" prefWidth="250"/>
+                </columns>
+            </TableView>
+        </VBox>
+
+    </VBox>
 </AnchorPane>

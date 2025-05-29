@@ -1,6 +1,7 @@
 package co.edu.uniquindio.poo.billeteradigital.service;
 
 import co.edu.uniquindio.poo.billeteradigital.interfaces.IUsuarioService;
+import co.edu.uniquindio.poo.billeteradigital.model.Cuenta;
 import co.edu.uniquindio.poo.billeteradigital.model.Usuario;
 
 import java.util.ArrayList;
@@ -56,7 +57,6 @@ public class UsuarioService implements IUsuarioService {
         return null; // Si no se encontró el usuario
     }
 
-
     @Override
     public void actualizarUsuario(Usuario usuario) {
         for (int i = 0; i < listaUsuarios.size(); i++) {
@@ -68,17 +68,26 @@ public class UsuarioService implements IUsuarioService {
     }
 
     @Override
-    public void eliminarUsuario(String idUsuario) {
+    public boolean eliminarUsuario(String idUsuario) {
         for (int i = 0; i < listaUsuarios.size(); i++) {
             if (listaUsuarios.get(i).getIdUsuario().equals(idUsuario)) {
                 listaUsuarios.remove(i);
                 break;
             }
         }
+        return true;
     }
+
+    @Override
+    public void actualizarSaldo(Usuario usuario, Cuenta cuenta, double nuevoSaldo) {
+        cuenta.setSaldo(nuevoSaldo);
+        actualizarUsuario(usuario); // Esto guarda el cambio
+    }
+
 
     @Override
     public List<Usuario> listarUsuarios() {
         return listaUsuarios;
     }
+
 }

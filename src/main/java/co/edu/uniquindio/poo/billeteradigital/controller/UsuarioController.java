@@ -6,6 +6,8 @@ import co.edu.uniquindio.poo.billeteradigital.model.Cuenta;
 import co.edu.uniquindio.poo.billeteradigital.model.Presupuesto;
 import co.edu.uniquindio.poo.billeteradigital.model.Transaccion;
 import co.edu.uniquindio.poo.billeteradigital.model.Usuario;
+import co.edu.uniquindio.poo.billeteradigital.service.CuentaService;
+import co.edu.uniquindio.poo.billeteradigital.service.UsuarioService;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -13,6 +15,8 @@ import java.util.List;
 public class UsuarioController {
 
     private final ModelFactoryController modelFactory;
+    private final UsuarioService usuarioService = new UsuarioService();
+    private final CuentaService cuentaService = new CuentaService();
 
     public UsuarioController() {
         this.modelFactory = ModelFactoryController.getInstance();
@@ -37,16 +41,16 @@ public class UsuarioController {
 
 
     // Gestion de Transacciones
-    public boolean realizarDeposito(Usuario usuario, double monto, String descripcion) {
-        return modelFactory.getBilleteraService().realizarDeposito(usuario, monto, descripcion);
+    public boolean realizarDeposito(Usuario usuario, Cuenta cuenta, double monto, String descripcion) {
+        return modelFactory.getBilleteraService().realizarDeposito(usuario, cuenta, monto, descripcion);
     }
 
-    public boolean realizarRetiro(Usuario usuario, double monto, String descripcion) {
-        return modelFactory.getBilleteraService().realizarRetiro(usuario, monto, descripcion);
+    public boolean realizarRetiro(Usuario usuario, Cuenta cuenta, double monto, String descripcion) {
+        return modelFactory.getBilleteraService().realizarRetiro(usuario, cuenta, monto, descripcion);
     }
 
-    public boolean realizarTransferencia(Usuario origen, Usuario destino, double monto, String descripcion) {
-        return modelFactory.getBilleteraService().realizarTransferencia(origen, destino, monto, descripcion);
+    public boolean realizarTransferencia(Usuario usuarioOrigen, Cuenta cuentaOrigen, Usuario usuarioDestino, Cuenta cuentaDestino, double monto, String descripcion) {
+        return modelFactory.getBilleteraService().realizarTransferencia(usuarioOrigen, cuentaOrigen, usuarioDestino, cuentaDestino, monto, descripcion);
     }
 
 
@@ -116,5 +120,9 @@ public class UsuarioController {
         return usuario.getSaldo();
     }
 
+    public void registrarUsuarioConCuenta(Usuario usuario, Cuenta cuenta) {
+        cuentaService.agregarCuenta(usuario, cuenta);
+        usuarioService.registrarUsuario(usuario);
+    }
 
 }
