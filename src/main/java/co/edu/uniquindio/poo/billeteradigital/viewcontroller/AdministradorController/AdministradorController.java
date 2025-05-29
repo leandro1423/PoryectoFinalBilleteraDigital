@@ -1,5 +1,6 @@
 package co.edu.uniquindio.poo.billeteradigital.viewcontroller.AdministradorController;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -12,6 +13,8 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class AdministradorController {
+
+    @FXML private Button btnCerrarSesion;
 
     @FXML private Button btnCrearUsuario;
     @FXML private Button btnActualizarUsuario;
@@ -108,5 +111,27 @@ public class AdministradorController {
         alert.setHeaderText(header);
         alert.setContentText(contenido);
         alert.showAndWait();
+    }
+
+    // ====== Botón: Cerrar sesión ======
+    @FXML
+    private void cerrarVentana(ActionEvent event) {
+        try {
+            Stage stageActual = (Stage) ((Button) event.getSource()).getScene().getWindow();
+            stageActual.close();
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/UsuarioView/UsuarioVistaInicio.fxml"));
+            Parent root = loader.load();
+
+            Scene scene = new Scene(root);
+            Stage stageLogin = new Stage();
+            stageLogin.setTitle("Inicio de Sesión");
+            stageLogin.setScene(scene);
+            stageLogin.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            mostrarMensaje("Error", null, "No se pudo abrir la ventana de inicio.", Alert.AlertType.ERROR);
+        }
     }
 }
