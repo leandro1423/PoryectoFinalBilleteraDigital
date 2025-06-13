@@ -110,6 +110,7 @@ public class UsuarioPrincipalViewController {
     // ====== Botón: Depositar ======
     @FXML
     private void handleDeposito(ActionEvent event) {
+        mostrarMensaje("Error", null, "Funcion en Proceso.", Alert.AlertType.ERROR);
 
     }
 
